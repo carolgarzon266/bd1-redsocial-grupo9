@@ -1,0 +1,117 @@
+--
+-- Scripts de Modificación de la Base de Datos
+-- Todas las instrucciones se deben realizar en secuencia sin errores
+-- Probar los scripts en detalle
+--
+
+--
+-- Modificación de Tablas
+-- 
+
+--
+-- 1.1.- Agregar un campo a la tabla de usuarios de la red social
+-- Agregar campo para intereses
+ALTER TABLE usuarios ADD COLUMN intereses TEXT;
+
+
+--
+-- 1.2.- Modificar un campo de la tabla de usuarios
+-- Modificar tama�o del campo area_estudio
+ALTER TABLE usuarios ALTER COLUMN area_estudio TYPE VARCHAR(100);
+
+
+
+--
+-- Gestionar una tabla "nueva"
+-- 1.- "agregar" una nueva tabla a la base de datos que tenga relación con el sistema
+-- 2.- Darle un nombre "coherente"
+-- 3.- Agregar campos coherentes con la tabla
+-- 4.- Realizar todas las operaciones que se solicitan a continuación
+--
+
+
+-- 1.3.1
+-- Crear una tabla "nueva" de su iniciativa (una tabla coherente con el sistema con su nombre, no coloque "nueva" como nombre)
+--CREATE TABLE eventos_provisionales (
+
+
+
+
+-- 1.3.2
+-- Agregar una clave primaria y otros 3 campos cualquiera a la tabla "nueva"
+-- Mínimo un campo tipo texto y uno numérico
+-- id_ev SERIAL PRIMARY KEY,
+    nombre_ev VARCHAR(50) NOT NULL,
+    cupos_max INT,
+    campo_extra VARCHAR(10) -- Campo para borrar
+);
+
+
+
+
+-- 1.3.3
+-- Quitar uno de los campos de la tabla "nueva"
+-- ALTER TABLE eventos_provisionales DROP COLUMN campo_extra;
+
+
+
+
+
+-- 1.3.4
+-- Cambiar el nombre de la tabla "nueva" a otro nombre "otro_nombre"
+-- Todas las operaciones siguientes se realizan sobre la tabla renombrada
+-- ALTER TABLE eventos_provisionales RENAME TO eventos_academicos;
+
+
+
+
+-- 1.3.5 
+-- Agregar un campo único a la tabla 
+-- ALTER TABLE eventos_academicos ADD COLUMN codigo_unico VARCHAR(20) UNIQUE;
+
+
+
+
+
+-- 1.3.6
+-- Agregar 2 fechas de inicio y fin; y colocar un control de orden de fechas
+-- Agregar fechas con control de orden (CHECK)
+ALTER TABLE eventos_academicos 
+ADD COLUMN fecha_inicio TIMESTAMP,
+ADD COLUMN fecha_fin TIMESTAMP,
+ADD CONSTRAINT check_fechas CHECK (fecha_fin > fecha_inicio);
+
+
+-- 1.3.7
+-- Agregar 1 campo entero y colocar un control para que no sea negativo
+-- ALTER TABLE eventos_academicos ADD COLUMN duracion_minutos INT;
+ALTER TABLE eventos_academicos ADD CONSTRAINT duracion_positiva CHECK (duracion_minutos > 0);
+
+
+-- 1.3.8
+-- Modificar el tamaño de un campo texto de la tabla renombra
+-- ALTER TABLE eventos_academicos ALTER COLUMN nombre_ev TYPE VARCHAR(150);
+
+
+-- 1.3.7
+-- Modificar el campo numeríco y colocar un control de rango 
+--ALTER TABLE eventos_academicos ADD CONSTRAINT rango_cupos CHECK (cupos_max BETWEEN 1 AND 100);
+
+
+
+-- 1.3.8
+-- Agregar un índice a la tabla (cualquier campo)
+-- CREATE INDEX idx_nombre_evento ON eventos_academicos(nombre_ev);
+
+
+
+--
+-- 1.3.9 
+-- Eliminar una de las fechas
+-- ALTER TABLE eventos_academicos DROP COLUMN fecha_fin;
+
+
+
+-- 1.3.10
+-- Borrar todos los datos de una tabla sin dejar traza
+-- TRUNCATE TABLE eventos_academicos;

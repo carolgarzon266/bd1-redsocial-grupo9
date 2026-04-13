@@ -1,0 +1,33 @@
+-- 1. Usuarios (Independiente)
+CREATE TABLE usuarios (
+    usuario_id SERIAL PRIMARY KEY,
+    nombre_completo VARCHAR(100) NOT NULL,
+    correo_institucional VARCHAR(100) UNIQUE NOT NULL,
+    area_estudio VARCHAR(50),
+    habilidades TEXT,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Grupos (Independiente)
+CREATE TABLE grupos (
+    grupo_id SERIAL PRIMARY KEY,
+    nombre_grupo VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    tipo_grupo VARCHAR(50) -- 'estudio', 'deporte', 'programacion'
+);
+
+-- 3. Publicaciones (Dependiente de Usuarios)
+CREATE TABLE publicaciones (
+    publicacion_id SERIAL PRIMARY KEY,
+    usuario_id INT REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
+    contenido TEXT NOT NULL,
+    fecha_publicacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. Miembros_Grupos (Tabla intermedia - Dependiente)
+CREATE TABLE miembros_grupos (
+    usuario_id INT REFERENCES usuarios(usuario_id),
+    grupo_id INT REFERENCES grupos(grupo_id),
+    rol VARCHAR(20) DEFAULT 'miembro',
+    PRIMARY KEY (usuario_id, grupo_id)
+);
